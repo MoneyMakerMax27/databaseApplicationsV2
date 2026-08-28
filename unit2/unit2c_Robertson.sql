@@ -51,7 +51,7 @@ FROM team_game_stats;
 -- =====================================================================
 
 -- Compare your results from queries 4 and 5. What changed?
-
+in querry 5 there is only round numbers
 
 -- You were told to add WHERE gp > 0 before dividing. Write one more
 -- query below to find out how many rows actually have gp = 0. How
@@ -64,6 +64,6 @@ FROM team_game_stats;
 -- =====================================================================
 
 -- Calculated column:
-
+column that 
 
 -- Concatenation (||):
