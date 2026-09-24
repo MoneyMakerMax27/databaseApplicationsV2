@@ -60,7 +60,7 @@ If a list has more than that, something in it is wrong. Once you find a wrong va
 | 2 | 48|home_city |Pheonix Suns |Phoenix Suns |
 | 3 | 70|away_state|OH |Ohio |
 | 4 | 93|home_city |Philidelphia |Philadelphia |
-| 5 |118|home_team Chicago Buls |Chicago Bulls |
+| 5 |118|home_team | Chicago Buls |Chicago Bulls |
 | 6 |124|home_state|IL |Illinois |
 | 7 |131|away_state|TX |Texas |
 | 8 |134|away_team |Chicago Bull |Chicago Bulls |
@@ -68,7 +68,10 @@ If a list has more than that, something in it is wrong. Once you find a wrong va
 **d.** Write a query that counts every Bulls game by **team name** (home or away). Compare your count to your city count from **b**. Which count is right, and why are they different?
 
 ```sql
-
+SELECT COUNT(*) AS bulls_game_count
+FROM games_flat
+WHERE home_team = 'Chicago Bulls'
+   OR away_team = 'Chicago Bulls';
 ```
 
 **Answer:**
@@ -93,33 +96,36 @@ For each scenario, name the anomaly (**update**, **insert**, or **delete**) and 
 **Scenario A** — Emma Fox drops Art I, so her Art I row is deleted.
 
 **Which anomaly:**
-
+Deletion anomaly
 **What goes wrong:**
-
+eleting Emma Fox's row completely removes all record of Art I
 
 **Scenario B** — The school hires a new teacher, Ms. Reyes, who will use Room 205. She has no students yet.
 
 **Which anomaly:**
-
+Insertion anomaly
 **What goes wrong:**
-
+You cannot add Ms. Reyes and Room 205 to the schedule without enrolling a student
 
 **Scenario C** — Mr. Grant moves from Room 214 to Room 220. How many rows have to change, and what happens if you miss one?
 
 **Which anomaly:**
-
+Update anomaly
 **What goes wrong:**
-
+If you miss updating even one row, the database will contain conflicting, inconsistent data
 
 **e.** In `denormalized_demo.db`, team facts (city, state, conference, division) were moved into their own table, `teams`. Which facts in `class_schedule` should be moved into their own table the same way?
 
 **Answer:**
-
+The course information—course, period, teacher, and room—should be moved into its own dedicated courses or classes table. Student enrollment would then link students to a specific course ID, eliminating redundant teacher and room data.
 
 **g.** Look up the Bulls' `team_id` in `teams`. Then write a query on **`games`** (not `games_flat`) that counts every Bulls game using that number. Which count from Part 1 or 2 does it match? Why can't the `games` table have the kind of mistake you found in Part 2?
 
 ```sql
-
+SELECT COUNT(*) AS bulls_game_count
+FROM games
+WHERE home_team_id = 5 
+   OR away_team_id = 5;
 ```
 
 **Answer:**
@@ -128,7 +134,18 @@ For each scenario, name the anomaly (**update**, **insert**, or **delete**) and 
 **h.** Write one query that shows the game date, home team name, away team name, home points, and away points for **Bulls games only**, sorted by date. Start from the walkthrough's query. You will need to add columns and a `WHERE`.
 
 ```sql
-
+SELECT 
+    g.game_date,
+    ht.full_name AS home_team,
+    at.full_name AS away_team,
+    g.home_pts,
+    g.away_pts
+FROM games g
+JOIN teams ht ON g.home_team_id = ht.team_id
+JOIN teams at ON g.away_team_id = at.team_id
+WHERE g.home_team_id = 5 
+   OR g.away_team_id = 5
+ORDER BY g.game_date;
 ```
 
 ## Closing 3a — Vocabulary
@@ -137,9 +154,9 @@ Your words, not the slide's.
 
 | Term | Your definition |
 |---|---|
-| Redundancy | |
-| Update anomaly | |
-| Insert anomaly | |
-| Delete anomaly | |
-| Normalization | |
+| Redundancy | Storing the exact same piece of data in multiple places across a database table, which wastes space and leads to inconsistencies.|
+| Update anomaly |A data error that happens when duplicated data is changed in one row but not in every other row where it appears, leaving conflicting information. |
+| Insert anomaly |A situation where new data cannot be added to a database table because required fields |
+| Delete anomaly | The unintentional loss of valuable data when deleting a record because unrelated information is stored together in the same row.|
+| Normalization |The process of organizing data into distinct, related tables to eliminate redundant values and protect data integrity. |
 
