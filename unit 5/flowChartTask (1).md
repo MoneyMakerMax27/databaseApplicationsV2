@@ -143,7 +143,33 @@ Write one or two sentences in the turn-in file explaining your twist.
 
 ## 7. Insert your mermaid code here: 
 ```mermaid
-
+flowchart TD
+    Start([Start]) --> A[/Tell him your pirate name/]
+    A --> B[Swab the deck]
+    B --> C{Is the deck clean?}
+    C -->|No| B
+    C -->|Yes| D[Train on the cannon]
+    D --> E[/Counts your hits/]
+    E --> F{Did you hit the barrel 7 or more times?}
+    
+    F -->|Yes| G[Promoted to gunner]
+    G --> H[/Welcome, Gunner!/]
+    H --> End1([End])
+    
+    F -->|No| I{Does your buddy speak up for you?}
+    
+    I -->|Yes| J[Ship's cook]
+    J --> K[/You're safe... for now/]
+    K --> End2([End])
+    
+    I -->|No| L{Did you eat the captain's last biscuit?}
+    
+    L -->|Yes| M[Walk the plank]
+    M --> N[/SPLASH!/]
+    N --> End3([End])
+    
+    L -->|No| O[Scrub the galley for a week]
+    O --> D
 
 
 ```
